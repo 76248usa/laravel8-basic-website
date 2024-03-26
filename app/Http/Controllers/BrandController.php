@@ -29,13 +29,6 @@ class BrandController extends Controller
 
         $brand_image = $request->file('brand_image');
 
-        // $name_gen = hexdec(uniqid());
-        // $img_ext = strtolower($brand_image->getClientOriginalExtension());
-        // $img_name = $name_gen.'.'.$img_ext;
-        // $up_location = 'image/brand/';
-        // $last_image = $up_location.$img_name;
-        // $brand_image->move($up_location,$img_name);
-
         $name_gen = hexdec(uniqid()).'.'.$brand_image->getClientOriginalExtension();
         Image::make($brand_image)->resize(200, 200)->save('image/brand/'.$name_gen);
 
@@ -46,8 +39,12 @@ class BrandController extends Controller
          'brand_image' => $last_img,
          'created_at' => Carbon::now()
         ]);
+        $notification = [
+          'message' => 'Brand inserted successfully',
+          'alert-type' => 'success'
+        ];
 
-        return Redirect()->back()->with('success', 'Image inserted');
+        return Redirect()->back()->with($notification);
      }
 
      public function Edit($id){
@@ -90,16 +87,24 @@ public function Update(Request $request, $id){
             'brand_image' => $last_img,
             'created_at' => Carbon::now()
         ]);
+         $notification = [
+          'message' => 'Image updated successfully',
+          'alert-type' => 'success'
+        ];
 
-        return Redirect()->back()->with('success', 'Updated Successfully');
+        return Redirect()->back()->with($notification);
       } else {
 
           Brand::find($id)->update([
             'brand_name' => $request->brand_name,
             'created_at' => Carbon::now()
         ]);
+         $notification = [
+          'message' => 'Updated successfully',
+          'alert-type' => 'success'
+        ];
 
-        return Redirect()->back()->with('success', 'Updated Successfully');
+        return Redirect()->back()->with($notification);
 
       }
     }
@@ -113,7 +118,11 @@ public function Update(Request $request, $id){
       }
       
       Brand::findOrFail($id)->delete();
-      return Redirect()->back()->with('success', 'Deleted Successfully');
+       $notification = [
+          'message' => 'Brand deleted successfully',
+          'alert-type' => 'success'
+        ];
+      return Redirect()->back()->with($notification);
 
     }
 
@@ -147,10 +156,7 @@ public function Update(Request $request, $id){
             } // end of the foreach
 
           return Redirect()->back()->with('success','Brand Inserted Successfully');
-
- 
      }
-
 
     }
 

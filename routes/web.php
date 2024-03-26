@@ -12,6 +12,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeAboutController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\ChangePass;
 
 
 Route::get('/email/verify', function () {
@@ -20,10 +21,9 @@ Route::get('/email/verify', function () {
 
 Route::get('/', function () {
     $brands = Brand::all();
-   // $brands = DB::table('brands')->get();
-    //$abouts = HomeAbout::first();
+   $images = DB::table('multipics')->get();
     $abouts = DB::table('home_abouts')->first();
-    return view('home', compact('brands', 'abouts'));
+    return view('home', compact('brands', 'abouts', 'images'));
 });
 
 Route::get('/home', function () {
@@ -93,3 +93,24 @@ Route::post('/store/service', [ServiceController::class, 'StoreServices'])->name
 Route::get('/service/edit/{id}', [ServiceController::class, 'EditService']);
 Route::post('service/update/{id}', [ServiceController::class, 'UpdateService']);
 Route::get('/service/delete/{id}', [ServiceController::class, 'DeleteService']);
+
+//PORTFOLIO PAGE ROUTE
+Route::get('/portfolio', [HomeAboutController::class, 'Portfolio'])->name('portfolio');
+
+//ADMIN CONTACT
+Route::get('/admin/contact', [ContactController::class, 'AdminContact'])->name('admin.contact');
+Route::get('/admin/add/contact', [ContactController::class, 'AdminAddContact'])->name('add.contact');
+Route::post('/admin/store/contact/',[ContactController::class, 'AdminStoreContact'])->name('store.contact'); 
+Route::get('/contact/edit/{id}', [ContactController::class, 'AdminEditContact']);
+Route::post('/contact/update/{id}', [ContactController::class, 'AdminUpdateContact']);
+Route::get('contact/delete/{id}', [ContactController::class, 'AdminDeleteContact']);
+
+//HOME CONTACT PAGE
+Route::get('/contact', [ContactController::class, 'Contact'])->name('contact');
+Route::post('/contact/form',[ContactController::class, 'ContactForm'])->name('contact.form');
+Route::get('/admin/message', [ContactController::class, 'ContactMessage'])->name('admin.message');
+Route::get('/message/delete/{id}',[ContactController::class, 'DeleteMessage']);
+
+//CHANGE PASSWORD / USER PROFILE
+Route::get('/user/password', [ChangePass::class, 'PasswordChange'])->name('change.password');
+Route::post('/password/update', [ChangePass::class, 'UpdatePassword'])->name('password.update');

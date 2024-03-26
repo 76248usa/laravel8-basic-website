@@ -39,6 +39,8 @@
   <!-- FAVICON -->
   <link href="assets/img/favicon.png" rel="shortcut icon" />
 
+  <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.css" />
+
   <!--
     HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
   -->
@@ -144,7 +146,7 @@
                   <!-- User Account -->
                   <li class="dropdown user-menu">
                     <button href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                      {{-- <img src="assets/img/user/user.png" class="user-image" alt="User Image" /> --}}
+                      {{-- <img src="{{ Auth::user()->user->profile_photo_url }}" class="user-image" alt="User Image" /> --}}
                       <span class="d-none d-lg-inline-block">{{ Auth::user()->name }}</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-right">
@@ -156,14 +158,14 @@
                         </div>
                       </li>
 
-                      <li>
+                      {{-- <li>
                         <a href="profile.html">
                           <i class="mdi mdi-account"></i> My Profile
                         </a>
-                      </li>
+                      </li> --}}
                       <li>
-                        <a href="email-inbox.html">
-                          <i class="mdi mdi-email"></i> Message
+                        <a href="{{ route('change.password') }}">
+                          <i class="mdi mdi-email"></i> Change Password
                         </a>
                       </li>
                       <li>
@@ -240,6 +242,27 @@
 <script src="{{ asset('backend/assets/js/date-range.js') }}"></script>
 <script src="{{ asset('backend/assets/js/map.js') }}"></script>
 <script src="{{ asset('backend/assets/js/custom.js') }}"></script>
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script>
+  @if(Session::has('message'))
+  var type = "{{ Session::get('alert','info') }}"
+  switch(type){
+    case 'info':
+      toastr.info("{{ Session::get('message') }}");
+      break;
+    case 'success':
+      toastr.success("{{ Session::get('message') }}");
+      break;
+    case 'warning':
+      toastr.warning("{{ Session::get('message') }}");
+      break;
+    case 'error':
+      toastr.error("{{ Session::get('message') }}");
+      break;  
+  }
+  @endif
+</script>
 
 {{-- <script src="assets/plugins/jquery/jquery.min.js"></script>
 <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
